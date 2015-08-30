@@ -31,21 +31,36 @@ angular.module('spotlistr.controllers', [])
 		}
 		$scope.userFactory = UserFactory;
 	}])
-	.controller('Textbox', ['$scope', '$routeParams', 'UserFactory', 'SpotifySearchFactory', 'SpotifyPlaylistFactory', 'QueryFactory', function($scope, $routeParams, UserFactory, SpotifySearchFactory, SpotifyPlaylistFactory, QueryFactory) {
+	.controller('Textbox', ['$scope', '$routeParams', 'UserFactory', 'SpotifySearchFactory', 'SpotifyPlaylistFactory', 'QueryFactory', 'x2js', function($scope, $routeParams, UserFactory, SpotifySearchFactory, SpotifyPlaylistFactory, QueryFactory, x2js) {
 		if ($routeParams.accessToken && $routeParams.refreshToken) {
 			UserFactory.setTokensAndPullUserInfo($routeParams.accessToken, $routeParams.refreshToken);
 		}
 		// The data in the text area
 		$scope.taData = '';
 
+		$scope.importXML = function() {
+			var file = angular.element(document.querySelector('#iTunesFile'));
+			alert(file.val());
+		};
+
 		defaultSearch.apply($scope, [UserFactory, QueryFactory, SpotifyPlaylistFactory]);
 
 		$scope.performSearch = function() {
 			$scope.searching = true;
 			QueryFactory.clearResults($scope.trackSet.tracks, $scope.messages);
-			var rawInputByLine = $scope.taData.split('\n');
-			for (var i = 0; i < rawInputByLine.length; i += 1) {
-				$scope.trackSet.tracks.push(new Track(rawInputByLine[i]));
+
+			if ($scope.taData.indexOf('<?xml') > -1) {
+				console.log('xml');
+				var songs = x2js.xml_str2json($scope.taData);
+				songs.plist.dict.dict.dict.forEach(function(song) {
+					$scope.trackSet.tracks.push(new Track(song.string[1] + ' ' + song.string[0]));
+				});
+			} else {
+				console.log('text');
+				var rawInputByLine = $scope.taData.split('\n');
+				for (var i = 0; i < rawInputByLine.length; i += 1) {
+					$scope.trackSet.tracks.push(new Track(rawInputByLine[i]));
+				}
 			}
 			QueryFactory.performSearch($scope.trackSet.tracks);
 			$scope.searching = false;

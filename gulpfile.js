@@ -1,4 +1,4 @@
-'use strict';
+'use strict'; // jshint ignore: line
 // include gulp
 var gulp = require('gulp');
 
@@ -17,37 +17,39 @@ var argv = require('minimist')(process.argv.slice(2));
 
 var paths = {
 	dist: {
-		root: './dist',
+		root: './dist'
 	},
 	html: {
 		src: './src/partials/*.html',
 		dest: './dist/partials',
-		index: './src/index.html',
+		index: './src/index.html'
 	},
 	css: {
 		src: [
-			'./bower_components/bootswatch/yeti/bootstrap.css',
-			'./bower_components/font-awesome/css/font-awesome.css',
-			'./src/css/*.css',
-			],
-		dest: './dist/css',
+			'./public/components/bootswatch/yeti/bootstrap.css',
+			'./public/components/font-awesome/css/font-awesome.css',
+			'./src/css/*.css'
+		],
+		dest: './dist/css'
 	},
 	fonts: {
-		src: ['./bower_components/font-awesome/fonts/fontawesome-webfont.*'],
-		dest: './dist/fonts',
+		src: ['./public/components/font-awesome/fonts/fontawesome-webfont.*'],
+		dest: './dist/fonts'
 	},
 	js: {
 		src: [
-			'./bower_components/angular/angular.js',
-			'./bower_components/angulartics/dist/angulartics.min.js',
-			'./bower_components/angulartics/dist/angulartics-ga.min.js',
-			'./bower_components/jquery/dist/jquery.min.js',
-			'./bower_components/angular-route/angular-route.js',
-			'./bower_components/bootstrap/dist/js/bootstrap.js',
-			'./src/js/*.js',
+			'./public/components/angular/angular.js',
+			'./public/components/angulartics/dist/angulartics.min.js',
+			'./public/components/angulartics/dist/angulartics-ga.min.js',
+			'./public/components/jquery/dist/jquery.min.js',
+			'./public/components/angular-route/angular-route.js',
+			'./public/components/bootstrap/dist/js/bootstrap.js',
+			'./public/components/x2js/xml2json.js',
+			'./public/components/angular-x2js/src/x2js.js',
+			'./src/js/*.js'
 		],
-		dest:'./dist/js',
-	},
+		dest: './dist/js'
+	}
 };
 
 // minify new or changed HTML pages
@@ -69,8 +71,12 @@ gulp.task('minify-css', function() {
 	return gulp.src(paths.css.src)
 		.pipe(concat('styles.css'))
 		.pipe(autoprefix('last 2 versions'))
-		.pipe(minifyCSS({ processImport: false }))
-		.pipe(rename({ suffix: '.min' }))
+		.pipe(minifyCSS({
+			processImport: false
+		}))
+		.pipe(rename({
+			suffix: '.min'
+		}))
 		.pipe(gulp.dest(paths.css.dest));
 });
 
@@ -88,9 +94,13 @@ gulp.task('copy-fonts', function() {
 gulp.task('bundle-scripts', function() {
 	gulp.src(paths.js.src)
 		.pipe(concat('spotlistr.js'))
-		.pipe(gulpif(!!argv['release'], stripDebug()))
-		.pipe(gulpif(!!argv['release'], uglify({mangle: false})))
-		.pipe(rename({ suffix: '.min' }))
+		.pipe(gulpif(!!argv.release, stripDebug()))
+		.pipe(gulpif(!!argv.release, uglify({
+			mangle: false
+		})))
+		.pipe(rename({
+			suffix: '.min'
+		}))
 		.pipe(gulp.dest(paths.js.dest));
 });
 

@@ -9,7 +9,8 @@ angular.module('spotlistr', [
   'spotlistr.directives',
   'spotlistr.controllers',
   'angulartics',
-  'angulartics.google.analytics'
+  'angulartics.google.analytics',
+  'cb.x2js'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/splash/', {

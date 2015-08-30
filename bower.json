@@ -17,9 +17,13 @@
     "angular-loader": "~1.2.x",
     "angular-mocks": "~1.2.x",
     "angular-route": "~1.2.x",
+    "angular-x2js": "~0.2.0",
+    "angulartics": "~0.15.19",
     "bootstrap": "~3.3.0",
-    "font-awesome": "~4.1.0",
     "bootswatch": "~3.3.0",
-    "angulartics": "~0.15.19"
+    "font-awesome": "~4.1.0"
+  },
+  "resolutions": {
+    "angular": "~1.3.0"
   }
 }
